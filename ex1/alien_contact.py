@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class ContactType(str, Enum):
@@ -31,12 +31,57 @@ class AlienContact(BaseModel):
         if self.contact_type == ContactType.PHYSICAL and not self.is_verified:
             raise ValueError("Physical contact reports must be verified")
 
-        if self.contact_type == ContactType.TELEPATHIC \
-                and self.witness_count < 3:
+        if (
+            self.contact_type == ContactType.TELEPATHIC
+            and self.witness_count < 3
+        ):
             raise ValueError(
-                "Telepathic contact requires at least 3 witnesses")
+                "Telepathic contact requires at least 3 witnesses"
+            )
 
         if self.signal_strength > 7.0 and not self.message_received:
             raise ValueError("Strong signals should include received messages")
 
         return self
+
+
+if __name__ == "__main__":
+    print("Alien Contact Log Validation")
+    print("======================================")
+
+    contact = AlienContact(
+        contact_id="AC_2024_001",
+        timestamp=datetime(2024, 1, 15, 10, 30, 0),
+        location="Area 51, Nevada",
+        contact_type=ContactType.RADIO,
+        signal_strength=8.5,
+        duration_minutes=45,
+        witness_count=5,
+        message_received="Greetings from Zeta Reticuli",
+    )
+
+    print("Valid contact report:")
+    print(f"ID: {contact.contact_id}")
+    print(f"Type: {contact.contact_type.value}")
+    print(f"Location: {contact.location}")
+    print(f"Signal: {contact.signal_strength}/10")
+    print(f"Duration: {contact.duration_minutes} minutes")
+    print(f"Witnesses: {contact.witness_count}")
+    print(f"Message: '{contact.message_received}'")
+
+    print()
+    print("======================================")
+    print("Expected validation error:")
+
+    try:
+        AlienContact(
+            contact_id="AC_2024_002",
+            timestamp=datetime(2024, 1, 16, 12, 0, 0),
+            location="Moon Base Alpha",
+            contact_type=ContactType.TELEPATHIC,
+            signal_strength=5.5,
+            duration_minutes=20,
+            witness_count=1,
+        )
+    except ValidationError as error:
+        print(str(error.errors()[0]["ctx"]["error"]))
