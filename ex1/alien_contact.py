@@ -45,7 +45,7 @@ class AlienContact(BaseModel):
         return self
 
 
-if __name__ == "__main__":
+def main() -> None:
     print("Alien Contact Log Validation")
     print("======================================")
 
@@ -85,3 +85,7 @@ if __name__ == "__main__":
         )
     except ValidationError as error:
         print(str(error.errors()[0]["ctx"]["error"]))
+
+
+if __name__ == "__main__":
+    main()

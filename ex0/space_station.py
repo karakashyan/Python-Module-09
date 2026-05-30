@@ -15,7 +15,7 @@ class SpaceStation(BaseModel):
     notes: Optional[str] = Field(default=None, max_length=200)
 
 
-if __name__ == "__main__":
+def main() -> None:
     print("Space Station Data Validation")
     print("========================================")
 
@@ -52,3 +52,7 @@ if __name__ == "__main__":
         )
     except ValidationError as error:
         print(error.errors()[0]['msg'])
+
+
+if __name__ == "__main__":
+    main()

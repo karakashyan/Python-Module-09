@@ -66,63 +66,64 @@ class SpaceMission(BaseModel):
         return self
 
 
-if __name__ == "__main__":
+def main() -> None:
     print("Space Mission Crew Validation")
-    print("=" * 41)
+    print("=========================================")
 
-    try:
-        valid_mission = SpaceMission(
-            mission_id="M2024_MARS",
-            mission_name="Mars Colony Establishment",
-            destination="Mars",
-            launch_date=datetime(2024, 7, 15, 10, 30),
-            duration_days=900,
-            crew=[
-                CrewMember(
-                    member_id="CM001",
-                    name="Sarah Connor",
-                    rank=Rank.COMMANDER,
-                    age=45,
-                    specialization="Mission Command",
-                    years_experience=15,
-                ),
-                CrewMember(
-                    member_id="CM002",
-                    name="John Smith",
-                    rank=Rank.LIEUTENANT,
-                    age=35,
-                    specialization="Navigation",
-                    years_experience=8,
-                ),
-                CrewMember(
-                    member_id="CM003",
-                    name="Alice Johnson",
-                    rank=Rank.OFFICER,
-                    age=29,
-                    specialization="Engineering",
-                    years_experience=6,
-                ),
-            ],
-            budget_millions=2500.0,
+    valid_mission = SpaceMission(
+        mission_id="M2024_MARS",
+        mission_name="Mars Colony Establishment",
+        destination="Mars",
+        launch_date=datetime(2024, 7, 15, 10, 30),
+        duration_days=900,
+        crew=[
+            CrewMember(
+                member_id="CM001",
+                name="Sarah Connor",
+                rank=Rank.COMMANDER,
+                age=45,
+                specialization="Mission Command",
+                years_experience=15,
+            ),
+            CrewMember(
+                member_id="CM002",
+                name="John Smith",
+                rank=Rank.LIEUTENANT,
+                age=35,
+                specialization="Navigation",
+                years_experience=8,
+            ),
+            CrewMember(
+                member_id="CM003",
+                name="Alice Johnson",
+                rank=Rank.OFFICER,
+                age=29,
+                specialization="Engineering",
+                years_experience=6,
+            ),
+        ],
+        budget_millions=2500.0,
+    )
+
+    print("Valid mission created:")
+    print(f"Mission: {valid_mission.mission_name}")
+    print(f"ID: {valid_mission.mission_id}")
+    print(f"Destination: {valid_mission.destination}")
+    print(f"Duration: {valid_mission.duration_days} days")
+    print(f"Budget: ${valid_mission.budget_millions}M")
+    print(f"Crew size: {len(valid_mission.crew)}")
+    print("Crew members:")
+
+    for member in valid_mission.crew:
+        print(
+            f"- {member.name} ({member.rank.value}) - "
+            f"{member.specialization}"
         )
 
-        print("Valid mission created:")
-        print(f"Mission: {valid_mission.mission_name}")
-        print(f"ID: {valid_mission.mission_id}")
-        print(f"Destination: {valid_mission.destination}")
-        print(f"Duration: {valid_mission.duration_days} days")
-        print(f"Budget: ${valid_mission.budget_millions}M")
-        print(f"Crew size: {len(valid_mission.crew)}")
-        print("Crew members:")
+    print()
+    print("=========================================")
 
-        for member in valid_mission.crew:
-            print(
-                f"- {member.name} ({member.rank.value}) - "
-                f"{member.specialization}"
-            )
-
-        print("=" * 41)
-
+    try:
         SpaceMission(
             mission_id="M2024_MOON",
             mission_name="Moon Research Mission",
@@ -149,7 +150,10 @@ if __name__ == "__main__":
             ],
             budget_millions=500.0,
         )
-
     except ValidationError as error:
         print("Expected validation error:")
         print(str(error.errors()[0]["ctx"]["error"]))
+
+
+if __name__ == "__main__":
+    main()
