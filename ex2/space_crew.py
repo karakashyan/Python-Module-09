@@ -116,12 +116,12 @@ def main() -> None:
 
     for member in valid_mission.crew:
         print(
-            f"- {member.name} ({member.rank.value}) - "
-            f"{member.specialization}"
-        )
+            f"- {member.name} ({member.rank.value}) - {member.specialization}"
+            )
 
     print()
     print("=========================================")
+    print("Expected validation error:")
 
     try:
         SpaceMission(
@@ -151,7 +151,6 @@ def main() -> None:
             budget_millions=500.0,
         )
     except ValidationError as error:
-        print("Expected validation error:")
         print(str(error.errors()[0]["ctx"]["error"]))
 
 
